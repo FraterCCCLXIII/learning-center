@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "name": "learning-center",
+  "display_name": "Learning Center",
+  "version": "0.1.0",
+  "description": "Browse courses of articles and videos loaded from a GitHub catalog repository.",
+  "entrypoint": "extension.js",
+  "contributes": {
+    "pages": [
+      {
+        "id": "center",
+        "title": "Learning Center",
+        "path": "/center",
+        "nav_label": "Learning Center",
+        "description": "Courses, articles, and videos from a catalog repository."
+      }
+    ]
+  }
+}

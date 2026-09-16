@@ -1,0 +1,51 @@
+{
+  "title": "OpenHands Learning Center",
+  "description": "Courses for Agent Canvas. Point the Learning Center app at this file to load live content from the repository.",
+  "courses": [
+    {
+      "id": "getting-started",
+      "title": "Getting started with Agent Canvas",
+      "description": "Learn what Agent Canvas is and how a first conversation works.",
+      "level": "beginner",
+      "lessons": [
+        {
+          "id": "welcome",
+          "title": "Welcome to Agent Canvas",
+          "kind": "article",
+          "description": "What the product is and what this Learning Center covers.",
+          "path": "courses/getting-started/welcome.md"
+        },
+        {
+          "id": "first-conversation",
+          "title": "Start your first conversation",
+          "kind": "article",
+          "description": "Create a thread, pick a workspace, and send a first task.",
+          "path": "courses/getting-started/first-conversation.md"
+        }
+      ]
+    },
+    {
+      "id": "authoring-catalogs",
+      "title": "Publish your own catalog",
+      "description": "Add article and video courses by publishing a catalog.json in a GitHub repository.",
+      "level": "intermediate",
+      "lessons": [
+        {
+          "id": "catalog-format",
+          "title": "Catalog format",
+          "kind": "article",
+          "description": "The JSON shape the Learning Center fetches from your repo.",
+          "path": "courses/authoring-catalogs/catalog-format.md"
+        },
+        {
+          "id": "sample-walkthrough",
+          "title": "Sample video lesson",
+          "kind": "video",
+          "description": "A public sample video that demonstrates the video lesson player.",
+          "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+          "duration": "10:34"
+        }
+      ]
+    }
+  ]
+}
