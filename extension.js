@@ -1271,11 +1271,11 @@ function posterArt(seed) {
   const node = document.createElement("div");
   const angle = 120 + (hashSeed(seed) % 50);
   node.style.background = `
-    radial-gradient(circle at 78% 18%, color-mix(in srgb, var(--oh-accent, #c9b974) 38%, transparent), transparent 42%),
+    radial-gradient(circle at 80% 12%, color-mix(in srgb, var(--oh-accent, #c9b974) 55%, transparent), transparent 46%),
     linear-gradient(${angle}deg,
       var(--oh-surface-deep, #0d0f14) 0%,
-      var(--oh-interactive-active, #232833) 48%,
-      color-mix(in srgb, var(--oh-accent, #c9b974) 34%, var(--oh-color-base, #111318)) 100%)
+      var(--oh-interactive-active, #232833) 42%,
+      color-mix(in srgb, var(--oh-accent, #c9b974) 52%, var(--oh-color-base, #111318)) 100%)
   `;
   return node;
 }
