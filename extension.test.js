@@ -133,7 +133,9 @@ describe("Learning Center app", () => {
     });
     expect(container.textContent).toContain("was not found");
 
-    container.querySelector("button")?.click();
+    container
+      .querySelector('[data-testid="learning-center-error"] button')
+      ?.click();
     expect(navigate).toHaveBeenCalledWith("/extensions/learning-center/center");
   });
 

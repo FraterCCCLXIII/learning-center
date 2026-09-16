@@ -11,68 +11,279 @@ const PATH_SEGMENT_PATTERN = /^[A-Za-z0-9._-]+$/;
 
 const STYLE = `
 .oh-learning-center {
+  --lc-pad: clamp(1rem, 3.2vw, 3rem);
   box-sizing: border-box;
   min-height: 100%;
-  padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 2.75rem;
-  color: var(--oh-text-primary, var(--foreground, #f5f5f5));
-  background: var(--oh-color-base, transparent);
+  color: var(--oh-foreground, var(--oh-text-primary, #f4f5f7));
+  background: var(--oh-color-base, #111318);
   font-family: inherit;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 .oh-learning-center *,
 .oh-learning-center *::before,
 .oh-learning-center *::after { box-sizing: border-box; }
 .oh-learning-center a {
   color: inherit;
-  text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--oh-accent, #c9b974) 55%, transparent);
 }
 .oh-learning-center :focus-visible {
-  outline: 2px solid var(--oh-accent, #6ea8fe);
-  outline-offset: 2px;
+  outline: 2px solid var(--oh-focus, #fff);
+  outline-offset: 3px;
+}
+.oh-lc-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem var(--lc-pad);
+  background: linear-gradient(
+    180deg,
+    var(--oh-color-base, #111318) 0%,
+    color-mix(in srgb, var(--oh-color-base, #111318) 82%, transparent) 70%,
+    transparent 100%
+  );
+}
+.oh-lc-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  appearance: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+.oh-lc-mark {
+  display: grid;
+  place-items: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 0.35rem;
+  background: var(--oh-accent, #c9b974);
+  color: var(--oh-accent-foreground, #111318);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.oh-lc-brand-name {
+  font-size: 0.95rem;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--oh-accent, #c9b974);
+}
+.oh-lc-hero {
+  position: relative;
+  min-height: min(68vh, 36rem);
+  padding: 6.5rem var(--lc-pad) 4.5rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+.oh-lc-hero-art {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.oh-lc-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, var(--oh-color-base, #111318) 8%, transparent 62%),
+    linear-gradient(180deg, transparent 42%, var(--oh-color-base, #111318) 96%);
+}
+.oh-lc-kicker {
+  margin: 0 0 0.7rem;
+  color: var(--oh-accent, #c9b974);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.oh-lc-title {
+  margin: 0;
+  max-width: 14ch;
+  font-size: clamp(2.2rem, 6vw, 4.4rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+}
+.oh-lc-lead {
+  margin: 1rem 0 0;
+  max-width: 36rem;
+  color: var(--oh-text-secondary, #d0d3da);
+  font-size: 1.02rem;
+}
+.oh-lc-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.4rem; }
+.oh-lc-button {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.6rem;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid transparent;
+  border-radius: var(--oh-radius, 8px);
+  background: var(--oh-surface-raised, #1b1e26);
+  color: inherit;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+.oh-lc-button:hover {
+  background: var(--oh-interactive-hover, #3a404c);
+}
+.oh-lc-button--primary {
+  background: var(--oh-accent, #c9b974);
+  color: var(--oh-accent-foreground, #111318);
+}
+.oh-lc-button--primary:hover {
+  filter: brightness(1.06);
+  background: var(--oh-accent, #c9b974);
+}
+.oh-lc-button--ghost {
+  background: color-mix(in srgb, var(--oh-foreground, #fff) 10%, transparent);
+  border-color: color-mix(in srgb, var(--oh-foreground, #fff) 18%, transparent);
+}
+.oh-lc-browse { padding: 0 0 3.5rem; }
+.oh-lc-row { margin-top: 0.35rem; }
+.oh-lc-row-title {
+  margin: 0 0 0.7rem;
+  padding: 0 var(--lc-pad);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+.oh-lc-rail-wrap { position: relative; }
+.oh-lc-rail {
+  display: flex;
+  gap: 0.7rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.35rem var(--lc-pad) 1.15rem;
+  scrollbar-color: var(--oh-scrollbar, transparent) transparent;
+}
+.oh-lc-rail-btn {
+  position: absolute;
+  top: 0.35rem;
+  bottom: 1.15rem;
+  z-index: 2;
+  width: 2.4rem;
+  border: 0;
+  background: color-mix(in srgb, var(--oh-color-base, #111318) 72%, transparent);
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.4rem;
+}
+.oh-lc-rail-btn:hover { background: color-mix(in srgb, var(--oh-color-base, #111318) 88%, transparent); }
+.oh-lc-rail-btn--prev { left: 0; }
+.oh-lc-rail-btn--next { right: 0; }
+.oh-lc-tile {
+  appearance: none;
+  flex: 0 0 min(72vw, 17.5rem);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  border: 0;
+  border-radius: 0.45rem;
+  background: var(--oh-surface, #171a20);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transform-origin: center bottom;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.oh-lc-tile:hover,
+.oh-lc-tile:focus-visible {
+  transform: scale(1.06);
+  z-index: 1;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+}
+.oh-lc-poster {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+.oh-lc-poster-label {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.55rem;
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: color-mix(in srgb, var(--oh-foreground, #fff) 88%, var(--oh-accent, #c9b974));
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+.oh-lc-tile-copy { padding: 0.7rem 0.8rem 0.9rem; }
+.oh-lc-tile-copy h2,
+.oh-lc-tile-copy h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.oh-lc-meta {
+  margin: 0.28rem 0 0;
+  color: var(--oh-muted, #9aa0ad);
+  font-size: 0.8rem;
+}
+.oh-lc-badge-row { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.45rem; }
+.oh-lc-badge {
+  display: inline-flex;
+  padding: 0.12rem 0.42rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--oh-accent, #c9b974) 14%, transparent);
+  color: var(--oh-accent, #c9b974);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.oh-lc-source {
+  margin: -2.4rem 0 0;
+  padding: 0 var(--lc-pad) 0.4rem;
+  color: var(--oh-text-dim, #7d8492);
+  font-size: 0.8rem;
+}
+.oh-lc-page {
+  padding: 0 var(--lc-pad) 3.5rem;
 }
 .oh-lc-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin: 0.4rem 0 1.4rem;
 }
-.oh-lc-kicker {
-  margin: 0 0 0.35rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.7;
+.oh-lc-header .oh-lc-title {
+  max-width: 18ch;
+  font-size: clamp(1.8rem, 4vw, 3rem);
 }
-.oh-lc-title { margin: 0; font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 650; }
-.oh-lc-lead { margin: 0.5rem 0 0; max-width: 42rem; opacity: 0.78; }
-.oh-lc-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.oh-lc-button,
-.oh-lc-card {
-  appearance: none;
-  border: 1px solid var(--oh-border, color-mix(in srgb, currentColor 16%, transparent));
-  background: color-mix(in srgb, currentColor 4%, transparent);
-  color: inherit;
-  border-radius: 0.85rem;
-  font: inherit;
-}
-.oh-lc-button {
-  padding: 0.55rem 0.85rem;
-  cursor: pointer;
-}
-.oh-lc-button:hover,
-.oh-lc-card:hover { background: color-mix(in srgb, currentColor 8%, transparent); }
 .oh-lc-crumbs {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.45rem;
   align-items: center;
-  margin: 0 0 1rem;
+  margin: 0.4rem 0 0.8rem;
   padding: 0;
   list-style: none;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  color: var(--oh-text-subtle, #6b7280);
+  font-size: 0.86rem;
+}
+.oh-lc-crumbs li:not(:last-child)::after {
+  content: "›";
+  margin-left: 0.45rem;
+  color: var(--oh-text-dim, #7d8492);
 }
 .oh-lc-crumbs button {
   appearance: none;
@@ -81,48 +292,53 @@ const STYLE = `
   color: inherit;
   font: inherit;
   cursor: pointer;
-  text-decoration: underline;
   padding: 0;
 }
-.oh-lc-grid {
+.oh-lc-crumbs button:hover { color: var(--oh-foreground, #fff); }
+.oh-lc-episodes {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
-  gap: 1rem;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-.oh-lc-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.45rem;
+.oh-lc-episode {
+  appearance: none;
+  display: grid;
+  grid-template-columns: 2.2rem minmax(7.5rem, 11rem) 1fr;
+  gap: 0.9rem;
+  align-items: center;
   width: 100%;
-  padding: 1.1rem 1.15rem 1.2rem;
+  padding: 0.55rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: var(--oh-surface, #171a20);
+  color: inherit;
+  font: inherit;
   text-align: left;
   cursor: pointer;
 }
-.oh-lc-card h2,
-.oh-lc-card h3 { margin: 0; font-size: 1.05rem; }
-.oh-lc-meta { margin: 0; font-size: 0.85rem; opacity: 0.7; }
-.oh-lc-badge-row { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-.oh-lc-badge {
-  display: inline-flex;
-  padding: 0.15rem 0.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--oh-border, color-mix(in srgb, currentColor 16%, transparent));
-  font-size: 0.75rem;
+.oh-lc-episode:hover { background: var(--oh-interactive-active, #232833); }
+.oh-lc-episode-num {
+  color: var(--oh-text-dim, #7d8492);
+  font-size: 1.15rem;
+  font-weight: 750;
+  text-align: center;
 }
+.oh-lc-episode .oh-lc-poster { border-radius: 0.3rem; }
+.oh-lc-episode h3 { margin: 0; font-size: 0.98rem; font-weight: 700; }
 .oh-lc-status {
-  margin: 1.5rem 0;
+  margin: 1.5rem var(--lc-pad);
   padding: 1rem 1.1rem;
-  border-radius: 0.85rem;
-  border: 1px solid var(--oh-border, color-mix(in srgb, currentColor 16%, transparent));
+  border-radius: var(--oh-radius, 8px);
+  background: var(--oh-surface, #171a20);
+  border: 1px solid var(--oh-border, #3a404c);
 }
 .oh-lc-status[data-tone="error"] {
-  border-color: color-mix(in srgb, #f87171 55%, transparent);
+  border-color: color-mix(in srgb, var(--oh-danger, #e76a5e) 55%, transparent);
 }
 .oh-lc-article,
-.oh-lc-video {
-  max-width: 46rem;
-}
+.oh-lc-video { max-width: 56rem; }
 .oh-lc-md > * + * { margin-top: 0.9rem; }
 .oh-lc-md h1,
 .oh-lc-md h2,
@@ -135,21 +351,22 @@ const STYLE = `
 .oh-lc-md pre {
   overflow: auto;
   padding: 0.85rem 1rem;
-  border-radius: 0.75rem;
-  background: color-mix(in srgb, currentColor 6%, transparent);
+  border-radius: var(--oh-radius, 8px);
+  background: var(--oh-surface-raised, #1b1e26);
 }
 .oh-lc-md :not(pre) > code {
   padding: 0.1rem 0.3rem;
   border-radius: 0.3rem;
-  background: color-mix(in srgb, currentColor 8%, transparent);
+  background: var(--oh-surface-raised, #1b1e26);
 }
 .oh-lc-player {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: 0.85rem;
+  border-radius: 0.45rem;
   overflow: hidden;
   background: #000;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 .oh-lc-player iframe,
 .oh-lc-player video {
@@ -168,19 +385,28 @@ const STYLE = `
 .oh-lc-field input {
   width: 100%;
   padding: 0.55rem 0.7rem;
-  border-radius: 0.65rem;
-  border: 1px solid var(--oh-border, color-mix(in srgb, currentColor 16%, transparent));
-  background: color-mix(in srgb, currentColor 4%, transparent);
+  border-radius: var(--oh-field-radius, 8px);
+  border: 1px solid var(--oh-border-input, #3a404c);
+  background: var(--oh-surface, #171a20);
   color: inherit;
   font: inherit;
 }
-.oh-lc-lessons { display: grid; gap: 0.65rem; margin: 0; padding: 0; list-style: none; }
-@media (max-width: 640px) {
-  .oh-learning-center { padding: 1rem 0.9rem 2rem; }
-  .oh-lc-grid { grid-template-columns: 1fr; }
+.oh-lc-footnote {
+  padding: 0 var(--lc-pad);
+  color: var(--oh-text-dim, #7d8492);
+  font-size: 0.75rem;
+}
+@media (max-width: 720px) {
+  .oh-lc-hero { min-height: auto; padding-top: 5.2rem; }
+  .oh-lc-title { max-width: none; }
+  .oh-lc-tile { flex-basis: min(78vw, 15.5rem); }
+  .oh-lc-episode { grid-template-columns: 1.6rem minmax(6rem, 8.5rem) 1fr; }
+  .oh-lc-rail-btn { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .oh-learning-center * { transition: none !important; }
+  .oh-lc-tile:hover,
+  .oh-lc-tile:focus-visible { transform: none; }
 }
 `;
 
@@ -632,34 +858,79 @@ async function renderRoute(root, { host, path, go, signal }) {
 }
 
 function renderHome(root, { host, catalog, source, go }) {
-  root.replaceChildren(
-    header(catalog.title, catalog.description, [
-      button("Catalog source", () => go("source"), "secondary"),
-    ]),
-    sourceBanner(source, go),
-    catalog.courses.length
-      ? courseGrid(catalog.courses, go)
-      : statusNode(
-          "empty",
-          "This catalog has no courses yet.",
-          "learning-center-empty",
-        ),
-    footnote(host),
+  const featured = catalog.courses[0] ?? null;
+  const articles = catalog.courses.flatMap((course) =>
+    course.lessons
+      .filter((lesson) => lesson.kind === "article")
+      .map((lesson) => ({ course, lesson })),
   );
+  const videos = catalog.courses.flatMap((course) =>
+    course.lessons
+      .filter((lesson) => lesson.kind === "video")
+      .map((lesson) => ({ course, lesson })),
+  );
+  const browse = document.createElement("div");
+  browse.className = "oh-lc-browse";
+  browse.dataset.testid = "learning-center-home";
+  if (!catalog.courses.length) {
+    browse.append(
+      statusNode(
+        "empty",
+        "This catalog has no courses yet.",
+        "learning-center-empty",
+      ),
+    );
+  } else {
+    const rows = [];
+    if (featured) {
+      rows.push(hero(featured, go));
+    }
+    rows.push(sourceBanner(source, go));
+    rows.push(
+      contentRow(
+        "Courses",
+        catalog.courses.map((course) => courseTile(course, go)),
+      ),
+    );
+    if (articles.length) {
+      rows.push(
+        contentRow(
+          "Articles",
+          articles.map(({ course, lesson }) => lessonTile(course, lesson, go)),
+        ),
+      );
+    }
+    if (videos.length) {
+      rows.push(
+        contentRow(
+          "Watch",
+          videos.map(({ course, lesson }) => lessonTile(course, lesson, go)),
+        ),
+      );
+    }
+    browse.append(...rows);
+  }
+  root.replaceChildren(topbar(go), browse, footnote(host));
 }
 
 function renderCourse(root, { catalog, course, go }) {
-  root.replaceChildren(
+  const first = course.lessons[0];
+  const page = document.createElement("div");
+  page.className = "oh-lc-page";
+  page.append(
     crumbs([
       ["Learning Center", () => go()],
       [course.title, null],
     ]),
     header(course.title, course.description, [
-      badge(course.level || "course"),
-      badge(`${course.lessons.length} lessons`),
+      first
+        ? button("Play", () => go(`course/${course.id}/lesson/${first.id}`), "primary")
+        : null,
+      button("More courses", () => go(), "ghost"),
     ]),
     lessonList(course, go),
   );
+  root.replaceChildren(topbar(go), page);
   void catalog;
 }
 
@@ -671,7 +942,9 @@ async function renderLesson(
   root,
   { catalog, course, lesson, source, go, signal },
 ) {
-  root.replaceChildren(
+  const page = document.createElement("div");
+  page.className = "oh-lc-page";
+  page.append(
     crumbs([
       ["Learning Center", () => go()],
       [course.title, () => go(`course/${course.id}`)],
@@ -682,6 +955,7 @@ async function renderLesson(
       lesson.duration ? badge(lesson.duration) : null,
     ]),
   );
+  root.replaceChildren(topbar(go), page);
 
   if (lesson.kind === "video") {
     const video = parseVideo(lesson.url);
@@ -712,7 +986,7 @@ async function renderLesson(
       }
       player.append(frame);
     }
-    root.append(player);
+    page.append(player);
     return;
   }
 
@@ -721,7 +995,7 @@ async function renderLesson(
     "Loading article…",
     "learning-center-loading",
   );
-  root.append(pending);
+  page.append(pending);
   try {
     const markdown = await loadArticle(source, lesson, signal);
     if (!asyncRenderGuard(signal)) return;
@@ -730,7 +1004,7 @@ async function renderLesson(
     article.className = "oh-lc-article";
     article.dataset.testid = "learning-center-lesson";
     article.append(renderMarkdown(markdown));
-    root.append(article);
+    page.append(article);
   } catch (error) {
     if (!asyncRenderGuard(signal)) return;
     pending.replaceWith(
@@ -757,7 +1031,7 @@ function renderSourcePage(root, { host, source, go }) {
 
   const actions = document.createElement("div");
   actions.className = "oh-lc-actions";
-  const save = button("Load catalog", () => undefined);
+  const save = button("Load catalog", () => undefined, "primary");
   save.type = "submit";
   const reset = button("Use sample catalog", () => {
     writeStoredSource(host.backend.id, null);
@@ -793,7 +1067,9 @@ function renderSourcePage(root, { host, source, go }) {
     go();
   });
 
-  root.replaceChildren(
+  const page = document.createElement("div");
+  page.className = "oh-lc-page";
+  page.append(
     crumbs([["Learning Center", () => go()], ["Catalog source", null]]),
     header(
       "Catalog source",
@@ -801,6 +1077,7 @@ function renderSourcePage(root, { host, source, go }) {
     ),
     form,
   );
+  root.replaceChildren(topbar(go), page);
 }
 
 function header(title, description, extras = []) {
@@ -831,61 +1108,200 @@ function header(title, description, extras = []) {
   return wrap;
 }
 
+function topbar(go) {
+  const bar = document.createElement("div");
+  bar.className = "oh-lc-topbar";
+  const brand = document.createElement("button");
+  brand.type = "button";
+  brand.className = "oh-lc-brand";
+  brand.setAttribute("aria-label", "Learning Center home");
+  const mark = document.createElement("span");
+  mark.className = "oh-lc-mark";
+  mark.textContent = "LC";
+  const name = document.createElement("span");
+  name.className = "oh-lc-brand-name";
+  name.textContent = "Learning Center";
+  brand.append(mark, name);
+  brand.addEventListener("click", () => go());
+  bar.append(brand, button("Catalog source", () => go("source"), "ghost"));
+  return bar;
+}
+
+function hero(course, go) {
+  const first = course.lessons[0];
+  const section = document.createElement("section");
+  section.className = "oh-lc-hero";
+  const art = posterArt(course.id);
+  art.className = "oh-lc-hero-art";
+  const kicker = document.createElement("p");
+  kicker.className = "oh-lc-kicker";
+  kicker.textContent = course.level ? `${course.level} course` : "Featured";
+  const title = document.createElement("h1");
+  title.className = "oh-lc-title";
+  title.textContent = course.title;
+  const lead = document.createElement("p");
+  lead.className = "oh-lc-lead";
+  lead.textContent = course.description;
+  const actions = document.createElement("div");
+  actions.className = "oh-lc-actions";
+  if (first) {
+    actions.append(
+      button("Play", () => go(`course/${course.id}/lesson/${first.id}`), "primary"),
+    );
+  }
+  actions.append(button("More info", () => go(`course/${course.id}`), "ghost"));
+  section.append(art, kicker, title, lead, actions);
+  return section;
+}
+
 function sourceBanner(source, go) {
   const note = document.createElement("p");
-  note.className = "oh-lc-meta";
+  note.className = "oh-lc-source";
   note.dataset.testid = "learning-center-source-status";
   note.textContent = source
     ? `Loaded from github:${source.owner}/${source.repo}@${source.ref}${source.path ? `/${source.path}` : ""}.`
     : "Showing the sample catalog. Connect a GitHub repository to load live courses.";
-  const row = document.createElement("div");
-  row.style.margin = "0 0 1.25rem";
-  row.append(note);
   if (!source) {
-    const link = button("Connect a catalog", () => go("source"));
-    link.style.marginTop = "0.65rem";
-    row.append(link);
+    const wrap = document.createElement("div");
+    wrap.className = "oh-lc-source";
+    note.className = "oh-lc-meta";
+    wrap.append(note, button("Connect a catalog", () => go("source"), "ghost"));
+    return wrap;
   }
-  return row;
+  return note;
 }
 
-function courseGrid(courses, go) {
-  const grid = document.createElement("div");
-  grid.className = "oh-lc-grid";
-  grid.dataset.testid = "learning-center-home";
-  for (const course of courses) {
-    const card = document.createElement("button");
-    card.type = "button";
-    card.className = "oh-lc-card";
-    card.dataset.testid = `course-card-${course.id}`;
-    const title = document.createElement("h2");
-    title.textContent = course.title;
+function contentRow(title, tiles) {
+  const section = document.createElement("section");
+  section.className = "oh-lc-row";
+  const heading = document.createElement("h2");
+  heading.className = "oh-lc-row-title";
+  heading.textContent = title;
+  const wrap = document.createElement("div");
+  wrap.className = "oh-lc-rail-wrap";
+  const rail = document.createElement("div");
+  rail.className = "oh-lc-rail";
+  for (const tile of tiles) rail.append(tile);
+  const prev = document.createElement("button");
+  prev.type = "button";
+  prev.className = "oh-lc-rail-btn oh-lc-rail-btn--prev";
+  prev.setAttribute("aria-label", `Scroll ${title} left`);
+  prev.textContent = "‹";
+  prev.addEventListener("click", () => {
+    rail.scrollBy({ left: -Math.round(rail.clientWidth * 0.8), behavior: "smooth" });
+  });
+  const next = document.createElement("button");
+  next.type = "button";
+  next.className = "oh-lc-rail-btn oh-lc-rail-btn--next";
+  next.setAttribute("aria-label", `Scroll ${title} right`);
+  next.textContent = "›";
+  next.addEventListener("click", () => {
+    rail.scrollBy({ left: Math.round(rail.clientWidth * 0.8), behavior: "smooth" });
+  });
+  wrap.append(prev, rail, next);
+  section.append(heading, wrap);
+  return section;
+}
+
+function courseTile(course, go) {
+  const kinds = [...new Set(course.lessons.map((lesson) => lesson.kind))];
+  return tile({
+    testId: `course-card-${course.id}`,
+    seed: course.id,
+    title: course.title,
+    headingLevel: "h2",
+    description: course.description,
+    badges: [course.level, `${course.lessons.length} lessons`, ...kinds].filter(
+      Boolean,
+    ),
+    onClick: () => go(`course/${course.id}`),
+  });
+}
+
+function lessonTile(course, lesson, go) {
+  return tile({
+    testId: `lesson-card-${lesson.id}`,
+    seed: `${course.id}-${lesson.id}`,
+    title: lesson.title,
+    headingLevel: "h3",
+    description: lesson.description,
+    badges: [lesson.kind, lesson.duration].filter(Boolean),
+    onClick: () => go(`course/${course.id}/lesson/${lesson.id}`),
+  });
+}
+
+function tile({ testId, seed, title, headingLevel, description, badges, onClick }) {
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "oh-lc-tile";
+  card.dataset.testid = testId;
+  const heading = document.createElement(headingLevel);
+  heading.textContent = title;
+  const copy = document.createElement("div");
+  copy.className = "oh-lc-tile-copy";
+  copy.append(heading);
+  if (description) {
     const meta = document.createElement("p");
     meta.className = "oh-lc-meta";
-    meta.textContent = course.description;
-    const badges = document.createElement("div");
-    badges.className = "oh-lc-badge-row";
-    if (course.level) badges.append(badge(course.level));
-    const kinds = new Set(course.lessons.map((lesson) => lesson.kind));
-    badges.append(badge(`${course.lessons.length} lessons`));
-    for (const kind of kinds) badges.append(badge(kind));
-    card.append(title, meta, badges);
-    card.addEventListener("click", () => go(`course/${course.id}`));
-    grid.append(card);
+    meta.textContent = description;
+    copy.append(meta);
   }
-  return grid;
+  if (badges?.length) {
+    const row = document.createElement("div");
+    row.className = "oh-lc-badge-row";
+    for (const label of badges) row.append(badge(label));
+    copy.append(row);
+  }
+  card.append(poster(seed, title), copy);
+  card.addEventListener("click", onClick);
+  return card;
+}
+
+function poster(seed, title) {
+  const node = posterArt(seed);
+  node.className = "oh-lc-poster";
+  const label = document.createElement("span");
+  label.className = "oh-lc-poster-label";
+  label.textContent = (title || seed).trim().slice(0, 1).toUpperCase();
+  node.append(label);
+  return node;
+}
+
+function posterArt(seed) {
+  const node = document.createElement("div");
+  const angle = 120 + (hashSeed(seed) % 50);
+  node.style.background = `
+    radial-gradient(circle at 78% 18%, color-mix(in srgb, var(--oh-accent, #c9b974) 38%, transparent), transparent 42%),
+    linear-gradient(${angle}deg,
+      var(--oh-surface-deep, #0d0f14) 0%,
+      var(--oh-interactive-active, #232833) 48%,
+      color-mix(in srgb, var(--oh-accent, #c9b974) 34%, var(--oh-color-base, #111318)) 100%)
+  `;
+  return node;
+}
+
+function hashSeed(value) {
+  let hash = 0;
+  for (const char of String(value)) {
+    hash = (hash * 31 + char.charCodeAt(0)) % 360;
+  }
+  return hash;
 }
 
 function lessonList(course, go) {
   const list = document.createElement("ol");
-  list.className = "oh-lc-lessons";
+  list.className = "oh-lc-episodes";
   list.dataset.testid = "learning-center-course";
-  for (const lesson of course.lessons) {
+  course.lessons.forEach((lesson, index) => {
     const item = document.createElement("li");
     const card = document.createElement("button");
     card.type = "button";
-    card.className = "oh-lc-card";
+    card.className = "oh-lc-episode";
     card.dataset.testid = `lesson-card-${lesson.id}`;
+    const number = document.createElement("span");
+    number.className = "oh-lc-episode-num";
+    number.textContent = String(index + 1);
+    const copy = document.createElement("div");
     const title = document.createElement("h3");
     title.textContent = lesson.title;
     const meta = document.createElement("p");
@@ -895,13 +1311,14 @@ function lessonList(course, go) {
     badges.className = "oh-lc-badge-row";
     badges.append(badge(lesson.kind));
     if (lesson.duration) badges.append(badge(lesson.duration));
-    card.append(title, meta, badges);
+    copy.append(title, meta, badges);
+    card.append(number, poster(`${course.id}-${lesson.id}`, lesson.title), copy);
     card.addEventListener("click", () =>
       go(`course/${course.id}/lesson/${lesson.id}`),
     );
     item.append(card);
     list.append(item);
-  }
+  });
   return list;
 }
 
@@ -930,10 +1347,15 @@ function crumbs(items) {
   return list;
 }
 
-function button(label, onClick) {
+function button(label, onClick, variant) {
   const control = document.createElement("button");
   control.type = "button";
-  control.className = "oh-lc-button";
+  control.className =
+    variant === "primary"
+      ? "oh-lc-button oh-lc-button--primary"
+      : variant === "ghost"
+        ? "oh-lc-button oh-lc-button--ghost"
+        : "oh-lc-button";
   control.textContent = label;
   control.addEventListener("click", onClick);
   return control;
@@ -963,8 +1385,7 @@ function field(labelText, name, value, placeholder) {
 
 function footnote(host) {
   const note = document.createElement("p");
-  note.className = "oh-lc-meta";
-  note.style.marginTop = "1.75rem";
+  note.className = "oh-lc-footnote";
   note.textContent = `App ${host.extension.name} ${host.extension.version} on ${host.backend.id}.`;
   return note;
 }
