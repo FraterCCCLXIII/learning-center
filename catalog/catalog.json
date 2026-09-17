@@ -1,18 +1,18 @@
 {
   "title": "OpenHands Learning Center",
-  "description": "Courses for Agent Canvas. Point the Learning Center app at this file to load live content from the repository.",
+  "description": "Courses for individual developers and for companies rolling OpenHands across the SDLC and automations. Stub articles now; full drafts later.",
   "courses": [
     {
       "id": "getting-started",
       "title": "Getting started with Agent Canvas",
-      "description": "Learn what Agent Canvas is and how a first conversation works.",
+      "description": "Install Canvas, connect a backend and model, and run a first conversation.",
       "level": "beginner",
       "lessons": [
         {
           "id": "welcome",
           "title": "Welcome to Agent Canvas",
           "kind": "article",
-          "description": "What the product is and what this Learning Center covers.",
+          "description": "What Agent Canvas is and who this Learning Center is for.",
           "path": "courses/getting-started/welcome.md"
         },
         {
@@ -21,6 +21,193 @@
           "kind": "article",
           "description": "Create a thread, pick a workspace, and send a first task.",
           "path": "courses/getting-started/first-conversation.md"
+        },
+        {
+          "id": "first-time-setup",
+          "title": "First-time setup",
+          "kind": "article",
+          "description": "Choose an agent, connect a backend, and add an LLM.",
+          "path": "courses/getting-started/first-time-setup.md"
+        }
+      ]
+    },
+    {
+      "id": "daily-workflow",
+      "title": "Your daily developer workflow",
+      "description": "Workspaces, prompts, files, and model profiles for everyday coding.",
+      "level": "beginner",
+      "lessons": [
+        {
+          "id": "choose-a-workspace",
+          "title": "Choose a workspace",
+          "kind": "article",
+          "description": "Point the agent at a local folder or a connected repository.",
+          "path": "courses/daily-workflow/choose-a-workspace.md"
+        },
+        {
+          "id": "write-better-instructions",
+          "title": "Write better instructions",
+          "kind": "article",
+          "description": "Ask for outcomes, constraints, and reviewable changes.",
+          "path": "courses/daily-workflow/write-better-instructions.md"
+        },
+        {
+          "id": "follow-the-work",
+          "title": "Follow files, terminal, and browser",
+          "kind": "article",
+          "description": "Watch the agent work and decide what to keep.",
+          "path": "courses/daily-workflow/follow-the-work.md"
+        },
+        {
+          "id": "llm-profiles",
+          "title": "Save and switch LLM profiles",
+          "kind": "article",
+          "description": "Keep more than one model ready without re-entering keys.",
+          "path": "courses/daily-workflow/llm-profiles.md"
+        }
+      ]
+    },
+    {
+      "id": "customize-agent",
+      "title": "Skills, MCP, and plugins",
+      "description": "Teach the agent your workflows and connect the tools you already use.",
+      "level": "intermediate",
+      "lessons": [
+        {
+          "id": "what-are-skills",
+          "title": "What skills are",
+          "kind": "article",
+          "description": "Reusable instructions that stop you from retyping the same prompt.",
+          "path": "courses/customize-agent/what-are-skills.md"
+        },
+        {
+          "id": "repo-customization",
+          "title": "AGENTS.md and repository skills",
+          "kind": "article",
+          "description": "Put project rules where every conversation can find them.",
+          "path": "courses/customize-agent/repo-customization.md"
+        },
+        {
+          "id": "connect-mcp",
+          "title": "Connect MCP servers",
+          "kind": "article",
+          "description": "Give the agent GitHub, Slack, and other tools through MCP.",
+          "path": "courses/customize-agent/connect-mcp.md"
+        },
+        {
+          "id": "plugins",
+          "title": "Browse and attach plugins",
+          "kind": "article",
+          "description": "Bundle skills, hooks, MCP, and commands into one package.",
+          "path": "courses/customize-agent/plugins.md"
+        }
+      ]
+    },
+    {
+      "id": "automations",
+      "title": "Automations that run without you",
+      "description": "Turn repeated agent work into scheduled and event-driven workflows.",
+      "level": "intermediate",
+      "lessons": [
+        {
+          "id": "why-automate",
+          "title": "From chats to always-on workflows",
+          "kind": "article",
+          "description": "When a conversation should become an automation.",
+          "path": "courses/automations/why-automate.md"
+        },
+        {
+          "id": "scheduled-automations",
+          "title": "Scheduled automations",
+          "kind": "article",
+          "description": "Daily reports, dependency checks, and other cron-style work.",
+          "path": "courses/automations/scheduled-automations.md"
+        },
+        {
+          "id": "event-automations",
+          "title": "Event-based automations",
+          "kind": "article",
+          "description": "React to GitHub, Slack, Linear, and custom webhooks.",
+          "path": "courses/automations/event-automations.md"
+        },
+        {
+          "id": "prebuilt-automations",
+          "title": "Ship a prebuilt automation",
+          "kind": "article",
+          "description": "PR review, repository monitor, and Slack channel monitor.",
+          "path": "courses/automations/prebuilt-automations.md"
+        }
+      ]
+    },
+    {
+      "id": "sdlc",
+      "title": "Cover the whole SDLC",
+      "description": "Use OpenHands from planning through deploy, incidents, and maintenance.",
+      "level": "intermediate",
+      "lessons": [
+        {
+          "id": "planning",
+          "title": "Planning and specs",
+          "kind": "article",
+          "description": "Turn product asks into technical specs and sprint tasks.",
+          "path": "courses/sdlc/planning.md"
+        },
+        {
+          "id": "implement-and-test",
+          "title": "Implement, test, and document",
+          "kind": "article",
+          "description": "Feature work, bug fixes, coverage, and docs in the same thread.",
+          "path": "courses/sdlc/implement-and-test.md"
+        },
+        {
+          "id": "review-and-prs",
+          "title": "Review and pull requests",
+          "kind": "article",
+          "description": "Automated review, labels, and human gates on every PR.",
+          "path": "courses/sdlc/review-and-prs.md"
+        },
+        {
+          "id": "deploy-and-operate",
+          "title": "Deploy, incidents, and maintenance",
+          "kind": "article",
+          "description": "Release notes, rollbacks, triage, and dependency upgrades.",
+          "path": "courses/sdlc/deploy-and-operate.md"
+        }
+      ]
+    },
+    {
+      "id": "for-companies",
+      "title": "OpenHands for teams and companies",
+      "description": "Roll out backends, governance, and shared automations without unsupervised agents.",
+      "level": "advanced",
+      "lessons": [
+        {
+          "id": "team-patterns",
+          "title": "Solo, team, and enterprise patterns",
+          "kind": "article",
+          "description": "How ownership and review change as more people use agents.",
+          "path": "courses/for-companies/team-patterns.md"
+        },
+        {
+          "id": "where-agents-run",
+          "title": "Where agents run",
+          "kind": "article",
+          "description": "Local, Docker, VM, Kubernetes, Cloud, and Enterprise backends.",
+          "path": "courses/for-companies/where-agents-run.md"
+        },
+        {
+          "id": "governance",
+          "title": "Governance, secrets, and cost",
+          "kind": "article",
+          "description": "Policies, audit, RBAC, and budgets around automated work.",
+          "path": "courses/for-companies/governance.md"
+        },
+        {
+          "id": "measure-and-scale",
+          "title": "Measure quality and scale",
+          "kind": "article",
+          "description": "Track merge rates, rejected suggestions, and which workflows pay off.",
+          "path": "courses/for-companies/measure-and-scale.md"
         }
       ]
     },

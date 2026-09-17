@@ -77,10 +77,61 @@ describe("Learning Center app", () => {
       ).not.toBeNull();
     });
     expect(container.textContent).toContain("Getting started with Agent Canvas");
-    expect(container.textContent).toContain("Showing the sample catalog");
+    expect(container.textContent).toContain("Your daily developer workflow");
+    expect(container.textContent).toContain("Automations that run without you");
+    expect(container.textContent).toContain("Cover the whole SDLC");
+    expect(container.textContent).toContain(
+      "OpenHands for teams and companies",
+    );
+    expect(container.textContent).not.toContain("Showing the sample catalog");
+    expect(container.querySelector(".oh-lc-brand .oh-lc-mark")?.tagName).toBe(
+      "svg",
+    );
 
     cleanup();
     expect(container.childElementCount).toBe(0);
+  });
+
+  it("renders a hero carousel with a right-side image and no poster letters", async () => {
+    const { container } = mount();
+
+    await vi.waitFor(() => {
+      expect(
+        container.querySelector('[data-testid="learning-center-hero"]'),
+      ).not.toBeNull();
+    });
+
+    const first = container.querySelector(
+      '[data-testid="hero-slide-getting-started"]',
+    );
+    const second = container.querySelector(
+      '[data-testid="hero-slide-daily-workflow"]',
+    );
+    expect(first?.dataset.active).toBe("true");
+    expect(second?.dataset.active).toBeUndefined();
+    const coverSrc = first
+      ?.querySelector(".oh-lc-hero-media img")
+      ?.getAttribute("src");
+    expect(coverSrc).toMatch(/^data:image\/svg\+xml/);
+    const coverSvg = decodeURIComponent(
+      coverSrc.replace(/^data:image\/svg\+xml;charset=utf-8,/, ""),
+    );
+    expect(coverSvg).toContain('data-oh-logo="true"');
+    expect(coverSvg).toContain("M71.754 16.863");
+    expect(coverSvg).toContain('fill="#282828"');
+    expect(coverSvg).toContain('fill="#565656"');
+    expect(coverSvg).not.toContain("#21252F");
+    expect(coverSvg).not.toContain("#626D82");
+    expect(container.querySelector(".oh-lc-poster-label")).toBeNull();
+    expect(
+      [...container.querySelectorAll(".oh-lc-poster")].every((node) =>
+        node.querySelector("img"),
+      ),
+    ).toBe(true);
+
+    container.querySelector('[aria-label="Next featured course"]')?.click();
+    expect(first?.dataset.active).toBeUndefined();
+    expect(second?.dataset.active).toBe("true");
   });
 
   it("renders a nested course route from the remainder path", async () => {
@@ -93,6 +144,10 @@ describe("Learning Center app", () => {
     });
     expect(container.textContent).toContain("Welcome to Agent Canvas");
     expect(container.textContent).toContain("Start your first conversation");
+    expect(container.textContent).toContain("First-time setup");
+    expect(container.textContent).toContain("Start");
+    expect(container.textContent).not.toContain("More courses");
+    expect(container.querySelector(".oh-lc-header")).not.toBeNull();
   });
 
   it("renders an article lesson and a video lesson", async () => {
@@ -110,6 +165,11 @@ describe("Learning Center app", () => {
     expect(article.container.textContent).toContain(
       "Agent Canvas is the control center for OpenHands",
     );
+    const lessonHeader = article.container.querySelector(".oh-lc-header");
+    expect(lessonHeader?.querySelector(".oh-lc-badge")?.textContent).toBe(
+      "article",
+    );
+    expect(lessonHeader?.querySelector(".oh-lc-actions")).toBeNull();
 
     const video = mount(
       createHost,
@@ -120,6 +180,57 @@ describe("Learning Center app", () => {
     });
     expect(video.container.querySelector("video")?.getAttribute("src")).toContain(
       "BigBuckBunny.mp4",
+    );
+    expect(
+      video.container.querySelector('[data-testid="lesson-nav-back"]'),
+    ).not.toBeNull();
+    expect(
+      video.container.querySelector('[data-testid="lesson-nav-next"]'),
+    ).not.toBeNull();
+  });
+
+  it("walks a course with Back and Next at the bottom of a lesson", async () => {
+    const { container, navigate } = mount(
+      createHost,
+      "course/getting-started/lesson/welcome",
+    );
+    await vi.waitFor(() => {
+      expect(
+        container.querySelector('[data-testid="learning-center-lesson"]'),
+      ).not.toBeNull();
+    });
+
+    const back = container.querySelector('[data-testid="lesson-nav-back"]');
+    const next = container.querySelector('[data-testid="lesson-nav-next"]');
+    expect(back?.textContent).toBe("Back");
+    expect(next?.textContent).toBe("Next");
+
+    next?.click();
+    expect(navigate).toHaveBeenCalledWith(
+      "/extensions/learning-center/center/course/getting-started/lesson/first-conversation",
+    );
+
+    back?.click();
+    expect(navigate).toHaveBeenCalledWith(
+      "/extensions/learning-center/center/course/getting-started",
+    );
+
+    const last = mount(
+      createHost,
+      "course/getting-started/lesson/first-time-setup",
+    );
+    await vi.waitFor(() => {
+      expect(
+        last.container.querySelector('[data-testid="learning-center-lesson"]'),
+      ).not.toBeNull();
+    });
+    last.container.querySelector('[data-testid="lesson-nav-next"]')?.click();
+    expect(last.navigate).toHaveBeenCalledWith(
+      "/extensions/learning-center/center/course/getting-started",
+    );
+    last.container.querySelector('[data-testid="lesson-nav-back"]')?.click();
+    expect(last.navigate).toHaveBeenCalledWith(
+      "/extensions/learning-center/center/course/getting-started/lesson/first-conversation",
     );
   });
 
@@ -178,7 +289,6 @@ describe("Learning Center app", () => {
       "https://raw.githubusercontent.com/acme/learn/main/catalog/catalog.json",
       expect.objectContaining({ signal: expect.any(AbortSignal) }),
     );
-    expect(container.textContent).toContain("github:acme/learn@main/catalog");
   });
 
   it("renders a safe error for a malformed remote catalog", async () => {
